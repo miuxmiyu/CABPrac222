@@ -97,10 +97,6 @@ public class Main {
         System.out.print("Enter your password: ");
         String password = scanner.nextLine();
         User user = authService.signUp(username, password);
-        if (user != null) {
-            System.out.println("Sign-up successful! You can now log in.");
-        } else {
-            System.out.println("Sign-up failed. Please try again.");
         }
     }
 
