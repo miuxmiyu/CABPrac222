@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Main {
     // Static list of users, acting as a database
     private static ArrayList<User> users = new ArrayList<>();
@@ -6,14 +9,19 @@ public class Main {
     private static IAuthenticationService authService = new IAuthenticationService() {
         @Override
         public User signUp(String username, String password) {
-            return null;
+            // Add new user to the list
+            User newUser = new User(username, password);
+            users.add(newUser);
+            return newUser;
         }
 
         @Override
         public User logIn(String username, String password) {
+            // For simplicity, always return the first user
             return users.get(0);
         }
     };
+
     private static boolean isRunning = true;
 
     /**
@@ -74,7 +82,9 @@ public class Main {
         String password = scanner.nextLine();
         User user = authService.logIn(username, password);
         System.out.println("Welcome, " + user.getUsername() + "!");
-        // TODO Later: Add the to-do list operations
+        // Create an instance of the ToDoList class with the logged-in user and call the run method
+        ToDoList toDoList = new ToDoList(user);
+        toDoList.run();
     }
 
     /**
@@ -87,7 +97,11 @@ public class Main {
         System.out.print("Enter your password: ");
         String password = scanner.nextLine();
         User user = authService.signUp(username, password);
-        // TODO Later: Shows a message based on the result
+        if (user != null) {
+            System.out.println("Sign-up successful! You can now log in.");
+        } else {
+            System.out.println("Sign-up failed. Please try again.");
+        }
     }
 
     /**
